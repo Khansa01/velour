@@ -1,69 +1,53 @@
-import Image from "next/image";
+import ProductCard from "@/components/product/ProductCard";
+import { products } from "@/lib/data/products";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main>
+      {/* Hero */}
+      <section className="bg-[#1a1a1a] px-6 md:px-16 py-24 md:py-36 text-center">
+        <p className="text-[11px] tracking-[3px] text-[#c9a87c] uppercase mb-4">
+          New Collection 2026
+        </p>
+        <h1 className="font-serif text-4xl md:text-6xl font-normal text-white leading-tight mb-4">
+          Beauty that tells<br />
+          <em className="italic text-[#c9a87c]">your story</em>
+        </h1>
+        <p className="text-[#a89a80] text-sm md:text-base mb-8">
+          Curated luxury for every skin, every mood, every moment
+        </p>
+        <div className="flex gap-3 justify-center flex-wrap">
+          <Link href="/products" className="px-8 py-3 bg-[#c9a87c] text-[#1a1a1a] text-xs tracking-[2px] uppercase font-medium hover:bg-[#b8976b] transition-colors">
+            Shop Now
+          </Link>
+          <Link href="/products" className="px-8 py-3 border border-white text-white text-xs tracking-[2px] uppercase hover:border-[#c9a87c] hover:text-[#c9a87c] transition-colors">
+            Explore Brands
+          </Link>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </section>
+
+      {/* Categories */}
+      <section className="px-6 md:px-16 py-12 bg-[#222]">
+        <p className="text-[13px] tracking-[3px] uppercase text-[#a89a80] mb-6">Shop by category</p>
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+          {["Skincare", "Makeup", "Fragrance", "Hair", "Best Sellers"].map((cat) => (
+            <div key={cat} className="border border-[rgba(201,168,124,0.2)] rounded-xl p-5 text-center cursor-pointer hover:border-[#c9a87c] transition-colors">
+              <p className="text-[12px] text-[#a89a80] tracking-wide">{cat}</p>
+            </div>
+          ))}
         </div>
-      </main>
-    </div>
+      </section>
+
+      {/* Trending */}
+      <section className="px-6 md:px-16 py-12 bg-[#1a1a1a]">
+        <p className="text-[13px] tracking-[3px] uppercase text-[#a89a80] mb-6">Trending now</p>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {products.map((p) => (
+            <ProductCard key={p.id} product={p} />
+          ))}
+        </div>
+      </section>
+    </main>
   );
 }
