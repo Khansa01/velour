@@ -2,7 +2,7 @@ import ProductCard from "@/components/product/ProductCard";
 import { products } from "@/lib/data/products";
 import Link from "next/link";
 
-export default function Home() {
+const Home = () => {
   return (
     <main>
       {/* Hero */}
@@ -51,3 +51,5 @@ export default function Home() {
     </main>
   );
 }
+
+export default Home;

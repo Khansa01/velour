@@ -1,8 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { useCartStore } from "../store/cartStore";
 
-export default function CartPage() {
+const CartPage = () => {
   const { items, remove, total } = useCartStore();
 
   if (items.length === 0) {
@@ -50,11 +51,13 @@ export default function CartPage() {
             <span className="text-sm">Total</span>
             <span className="text-[#c9a87c] font-medium">Rp {total().toLocaleString("id-ID")}</span>
           </div>
-          <button className="w-full py-3 bg-[#c9a87c] text-[#1a1a1a] text-xs tracking-[2px] uppercase font-medium hover:bg-[#b8976b] transition-colors">
+          <Link href="/checkout" className="w-full py-3 bg-[#c9a87c] text-[#1a1a1a] text-xs tracking-[2px] uppercase font-medium hover:bg-[#b8976b] transition-colors text-center block">
             Checkout
-          </button>
+          </Link>
         </div>
       </div>
     </main>
   );
 }
+
+export default CartPage;

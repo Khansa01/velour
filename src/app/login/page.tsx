@@ -3,12 +3,13 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
-export default function LoginPage() {
+const LoginPage = () => {
   const router = useRouter();
   const [error, setError] = useState("");
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = new FormData(e.currentTarget);
     const res = await signIn("credentials", {
@@ -65,7 +66,16 @@ export default function LoginPage() {
           </button>
         </form>
 
+        <p className="text-[#a89a80] text-xs text-center mt-6">
+            Don't have an account?{" "}
+            <Link href="/register" className="text-[#c9a87c] hover:underline">
+                Create one
+            </Link>
+        </p>
+
       </div>
     </main>
   );
 }
+
+export default LoginPage;

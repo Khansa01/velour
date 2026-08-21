@@ -1,7 +1,7 @@
 import ProductCard from "@/components/product/ProductCard";
 import { products } from "@/lib/data/products";
 
-export default function ProductsPage() {
+const ProductsPage = () => {
   return (
     <main className="px-6 md:px-16 py-12 bg-[#1a1a1a] min-h-screen">
       <p className="text-[13px] tracking-[3px] uppercase text-[#a89a80] mb-2">All Products</p>
@@ -29,4 +29,6 @@ export default function ProductsPage() {
       </div>
     </main>
   );
-}   
+}
+
+export default ProductsPage;

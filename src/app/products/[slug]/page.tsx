@@ -1,11 +1,22 @@
+"use client";
+
+import React from "react";
 import { useCartStore } from "@/app/store/cartStore";
+import { useWishlistStore } from "@/app/store/wishlistStore";
 import { products } from "@/lib/data/products";
 import { notFound } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
-export default function ProductDetailPage({ params }: { params: { slug: string } }) {
-  const product = products.find((p) => p.slug === params.slug);
+const ProductDetailPage = ({ params }: { params: Promise<{ slug: string }> }) => {
+  const { slug } = React.use(params);
+  const product = products.find((p) => p.slug === slug);
   if (!product) notFound();
-  const add = useCartStore((s) => s.add);
+  const { add: addToCart } = useCartStore();
+  const { add, remove, has } = useWishlistStore();
+  const isWishlisted = has(product.id);
+  const { data: session } = useSession();
+  const router = useRouter();
 
   return (
     <main className="px-6 md:px-16 py-12 bg-[#1a1a1a] min-h-screen">
@@ -33,11 +44,27 @@ export default function ProductDetailPage({ params }: { params: { slug: string }
           </p>
 
           <div className="flex gap-3">
-            <button onClick={() => add(product)} className="flex-1 py-3 bg-[#c9a87c] text-[#1a1a1a] text-xs tracking-[2px] uppercase font-medium hover:bg-[#b8976b] transition-colors">
+            <button
+              onClick={() => {
+                if (!session) {
+                  router.push("/login");
+                  return;
+                }
+                addToCart(product);
+              }}
+              className="flex-1 py-3 bg-[#c9a87c] text-[#1a1a1a] text-xs tracking-[2px] uppercase font-medium hover:bg-[#b8976b] transition-colors"
+            >
               Add to Cart
             </button>
-            <button className="px-4 py-3 border border-[rgba(201,168,124,0.3)] text-[#c9a87c] text-xs tracking-[2px] uppercase hover:border-[#c9a87c] transition-colors">
-              Wishlist
+            <button
+              onClick={() => isWishlisted ? remove(product.id) : add(product)}
+              className={`px-4 py-3 border text-xs tracking-[2px] uppercase transition-colors ${
+                isWishlisted
+                  ? "border-[#c9a87c] text-[#c9a87c]"
+                  : "border-[rgba(201,168,124,0.3)] text-[#a89a80] hover:border-[#c9a87c] hover:text-[#c9a87c]"
+              }`}
+            >
+              {isWishlisted ? "Wishlisted ♥" : "Wishlist"}
             </button>
           </div>
         </div>
@@ -45,3 +72,5 @@ export default function ProductDetailPage({ params }: { params: { slug: string }
     </main>
   );
 }
+
+export default ProductDetailPage;
