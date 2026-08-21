@@ -17,7 +17,7 @@ A luxury beauty e-commerce web app built with Next.js — inspired by Sephora.
 1. Clone the repo
 
 ```bash
-   git clone https://github.com/yourusername/velour.git
+   git clone https://github.com/Khansa01/velour.git
    cd velour
 ```
 
