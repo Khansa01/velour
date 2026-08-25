@@ -2,15 +2,19 @@
 
 A luxury beauty e-commerce web app built with Next.js — inspired by Sephora.
 
+## Live Demo
+
+[velour-by-khansa.vercel.app](https://velour-by-khansa.vercel.app)
+
 ## Tech Stack
 
 - **Next.js 14** (App Router)
 - **TypeScript**
 - **Tailwind CSS** + **shadcn/ui**
-- **Supabase** (Database + Storage)
-- **Prisma** (ORM)
-- **Zustand** (Cart state)
-- **Cloudinary** (Image hosting)
+- **Supabase** (PostgreSQL Database)
+- **Prisma v7** (ORM)
+- **NextAuth.js** (Authentication + Google OAuth)
+- **Zustand** (Cart & Wishlist state)
 
 ## Getting Started
 
@@ -35,7 +39,14 @@ A luxury beauty e-commerce web app built with Next.js — inspired by Sephora.
 
 Fill in your keys in `.env.local`
 
-4. Run the dev server
+4. Setup database
+
+```bash
+   npx prisma generate
+   npx prisma migrate dev --name init
+```
+
+5. Run the dev server
 
 ```bash
    npm run dev
@@ -48,9 +59,10 @@ Open [http://localhost:3000](http://localhost:3000)
 - Product listing & detail page
 - Category filter & search
 - Cart & wishlist
-- User authentication
+- Google OAuth + credentials authentication
 - Checkout flow (sandbox)
 - Responsive design
+- PostgreSQL database via Supabase
 
 ## Environment Variables
 

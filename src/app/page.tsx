@@ -1,15 +1,20 @@
-import ProductCard from "@/components/product/ProductCard";
-import { products } from "@/lib/data/products";
 import Link from "next/link";
+import ProductCard from "@/components/product/ProductCard";
+import { Product } from "@/lib/data/products";
 
-const Home = () => {
+const getProducts = async () => {
+  const res = await fetch("http://localhost:3000/api/products", { cache: "no-store" });
+  return res.json() as Promise<Product[]>;
+};
+
+const Home = async () => {
+  const products = await getProducts();
+
   return (
     <main>
       {/* Hero */}
       <section className="bg-[#1a1a1a] px-6 md:px-16 py-24 md:py-36 text-center">
-        <p className="text-[11px] tracking-[3px] text-[#c9a87c] uppercase mb-4">
-          New Collection 2026
-        </p>
+        <p className="text-[11px] tracking-[3px] text-[#c9a87c] uppercase mb-4">New Collection 2026</p>
         <h1 className="font-serif text-4xl md:text-6xl font-normal text-white leading-tight mb-4">
           Beauty that tells<br />
           <em className="italic text-[#c9a87c]">your story</em>
@@ -50,6 +55,6 @@ const Home = () => {
       </section>
     </main>
   );
-}
+};
 
 export default Home;
