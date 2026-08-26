@@ -1,11 +1,16 @@
+import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
 import * as PrismaClientPkg from "@prisma/client";
 
 // @ts-ignore
 const PrismaClient = PrismaClientPkg.PrismaClient ?? PrismaClientPkg.default.PrismaClient;
 
+const connectionString = process.env.DATABASE_URL!;
+
+console.log("DB URL:", connectionString?.slice(0, 30)); // debug sementara
+
 const adapter = new PrismaPg({
-  connectionString: process.env.DATABASE_URL!,
+  connectionString,
   ssl: { rejectUnauthorized: false },
 });
 
