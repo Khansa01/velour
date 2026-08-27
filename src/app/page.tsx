@@ -1,12 +1,12 @@
 import Link from "next/link";
 import ProductCard from "@/components/product/ProductCard";
 import { supabase } from "@/lib/supabase";
-// import { products } from "@/lib/data/products";
+
+export const revalidate = 0;
 
 const Home = async () => {
   const { data: products, error } = await supabase.from("Product").select("*");
 
-  // fallback biar tidak crash
   const items = products ?? [];
 
   return (
