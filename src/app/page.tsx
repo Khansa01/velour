@@ -1,14 +1,13 @@
 import Link from "next/link";
 import ProductCard from "@/components/product/ProductCard";
-import { Product } from "@/lib/data/products";
-
-const getProducts = async () => {
-  const res = await fetch("http://localhost:3000/api/products", { cache: "no-store" });
-  return res.json() as Promise<Product[]>;
-};
+import { supabase } from "@/lib/supabase";
+// import { products } from "@/lib/data/products";
 
 const Home = async () => {
-  const products = await getProducts();
+  const { data: products, error } = await supabase.from("Product").select("*");
+
+  // fallback biar tidak crash
+  const items = products ?? [];
 
   return (
     <main>
@@ -48,7 +47,7 @@ const Home = async () => {
       <section className="px-6 md:px-16 py-12 bg-[#1a1a1a]">
         <p className="text-[13px] tracking-[3px] uppercase text-[#a89a80] mb-6">Trending now</p>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {products.map((p) => (
+          {items.map((p) => (
             <ProductCard key={p.id} product={p} />
           ))}
         </div>
