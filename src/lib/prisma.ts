@@ -7,8 +7,6 @@ const PrismaClient = PrismaClientPkg.PrismaClient ?? PrismaClientPkg.default.Pri
 
 const connectionString = process.env.DATABASE_URL!;
 
-console.log("DB URL:", connectionString?.slice(0, 30)); // debug sementara
-
 const adapter = new PrismaPg({
   connectionString,
   ssl: { rejectUnauthorized: false },

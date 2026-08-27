@@ -5,8 +5,6 @@ import { supabase } from "@/lib/supabase";
 
 const Home = async () => {
   const { data: products, error } = await supabase.from("Product").select("*");
-  console.log("error:", error);
-  console.log("products:", products);
 
   // fallback biar tidak crash
   const items = products ?? [];
