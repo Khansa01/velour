@@ -4,8 +4,12 @@ export type Product = {
   brand: string;
   name: string;
   price: number;
-  badge?: string;
-  bgColor?: string;
+  badge?: string | null;
+  bgColor?: string | null;
+  category?: string | null;
+  description?: string | null;
+  imageUrl?: string | null;
+  createdAt?: Date;
 };
 
 export const products: Product[] = [

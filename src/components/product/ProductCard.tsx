@@ -10,6 +10,7 @@ type Product = {
   bgColor?: string | null;
   category?: string | null;
   description?: string | null;
+  imageUrl?: string | null;
   createdAt?: Date;
 };
 
@@ -21,6 +22,9 @@ export default function ProductCard({ product }: { product: Product }) {
         className="h-48 flex items-center justify-center relative"
         style={{ background: product.bgColor ?? "linear-gradient(135deg, #f5ede4, #e8d5c4)" }}
       >
+        {product.imageUrl ? (
+          <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover" />
+        ) : null}
         {product.badge && (
           <span className="absolute top-2 left-2 bg-[#1a1a1a] text-white text-[10px] px-2 py-0.5 tracking-widest">
             {product.badge}
