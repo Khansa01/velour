@@ -1,31 +1,47 @@
 "use client";
 
 import React from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { supabase } from "@/lib/supabase";
 import { useCartStore } from "@/app/store/cartStore";
 import { useWishlistStore } from "@/app/store/wishlistStore";
-import { products } from "@/lib/data/products";
-import { notFound } from "next/navigation";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 
 const ProductDetailPage = ({ params }: { params: Promise<{ slug: string }> }) => {
   const { slug } = React.use(params);
-  const product = products.find((p) => p.slug === slug);
-  if (!product) notFound();
+  const router = useRouter();
+  const { data: session } = useSession();
   const { add: addToCart } = useCartStore();
   const { add, remove, has } = useWishlistStore();
+  const [product, setProduct] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      const { data } = await supabase.from("Product").select("*").eq("slug", slug).single();
+      setProduct(data);
+    };
+    fetchProduct();
+  }, [slug]);
+
+  if (!product) return (
+    <main className="px-16 py-12 bg-[#1a1a1a] min-h-screen text-[#a89a80]">Loading...</main>
+  );
+
   const isWishlisted = has(product.id);
-  const { data: session } = useSession();
-  const router = useRouter();
 
   return (
     <main className="px-6 md:px-16 py-12 bg-[#1a1a1a] min-h-screen">
       <div className="flex flex-col md:flex-row gap-12">
         {/* Image */}
         <div
-          className="w-full md:w-1/2 h-80 md:h-[500px] rounded-xl"
+          className="w-full md:w-1/2 h-80 md:h-[500px] rounded-xl overflow-hidden"
           style={{ background: product.bgColor ?? "linear-gradient(135deg, #f5ede4, #e8d5c4)" }}
-        />
+        >
+          {product.imageUrl && (
+            <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover" />
+          )}
+        </div>
 
         {/* Info */}
         <div className="flex-1 flex flex-col justify-center">
@@ -40,16 +56,13 @@ const ProductDetailPage = ({ params }: { params: Promise<{ slug: string }> }) =>
             Rp {product.price.toLocaleString("id-ID")}
           </p>
           <p className="text-[#a89a80] text-sm leading-relaxed mb-8">
-            A luxurious formula crafted for radiant, healthy-looking skin. Suitable for all skin types.
+            {product.description ?? "A luxurious formula crafted for radiant, healthy-looking skin."}
           </p>
 
           <div className="flex gap-3">
             <button
               onClick={() => {
-                if (!session) {
-                  router.push("/login");
-                  return;
-                }
+                if (!session) { router.push("/login"); return; }
                 addToCart(product);
               }}
               className="flex-1 py-3 bg-[#c9a87c] text-[#1a1a1a] text-xs tracking-[2px] uppercase font-medium hover:bg-[#b8976b] transition-colors"
@@ -71,6 +84,6 @@ const ProductDetailPage = ({ params }: { params: Promise<{ slug: string }> }) =>
       </div>
     </main>
   );
-}
+};
 
 export default ProductDetailPage;
