@@ -8,48 +8,42 @@ A luxury beauty e-commerce web app built with Next.js — inspired by Sephora.
 
 ## Tech Stack
 
-- **Next.js 14** (App Router)
+- **Next.js 16** (App Router)
 - **TypeScript**
+- **React 19**
 - **Tailwind CSS** + **shadcn/ui**
 - **Supabase** (PostgreSQL Database)
-- **Prisma v7** (ORM)
 - **NextAuth.js** (Authentication + Google OAuth)
 - **Zustand** (Cart & Wishlist state)
+- **TanStack React Query**
 
 ## Getting Started
 
 1. Clone the repo
 
 ```bash
-   git clone https://github.com/Khansa01/velour.git
-   cd velour
+git clone https://github.com/Khansa01/velour.git
+cd velour
 ```
 
 2. Install dependencies
 
 ```bash
-   npm install
+npm install
 ```
 
 3. Setup environment variables
 
 ```bash
-   cp .env.example .env.local
+cp .env.example .env.local
 ```
 
 Fill in your keys in `.env.local`
 
-4. Setup database
+4. Run the dev server
 
 ```bash
-   npx prisma generate
-   npx prisma migrate dev --name init
-```
-
-5. Run the dev server
-
-```bash
-   npm run dev
+npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000)
@@ -62,6 +56,7 @@ Open [http://localhost:3000](http://localhost:3000)
 - Google OAuth + credentials authentication
 - Checkout flow (sandbox)
 - Responsive design
+- Image upload with auto WebP conversion
 - PostgreSQL database via Supabase
 
 ## Environment Variables
