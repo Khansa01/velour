@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { v4 as uuidv4 } from "uuid";
 import React from "react";
-import { convertToWebp } from "@/lib/convertToWebp";
 
 const EditProductPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = React.use(params);
@@ -39,16 +38,11 @@ const EditProductPage = ({ params }: { params: Promise<{ id: string }> }) => {
 
     let imageUrl = product.imageUrl;
     if (imageFile) {
-      const ext = imageFile.name.split(".").pop();
-      const webpBlob = await convertToWebp(imageFile);
-      const fileName = `${uuidv4()}.webp`;
-      const { error: uploadError } = await supabase.storage
-        .from("products")
-        .upload(fileName, webpBlob, { contentType: "image/webp" });
-      if (!uploadError) {
-        const { data } = supabase.storage.from("products").getPublicUrl(fileName);
-        imageUrl = data.publicUrl;
-      }
+      const uploadForm = new FormData();
+      uploadForm.append("file", imageFile);
+      const res = await fetch("/api/upload", { method: "POST", body: uploadForm });
+      const { url } = await res.json();
+      imageUrl = url;
     }
 
     const { error } = await supabase

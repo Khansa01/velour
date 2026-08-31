@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
+import { supabase } from "@/lib/supabase";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -21,5 +22,25 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
+  callbacks: {
+    async signIn({ user }) {
+      if (!user.email) return true;
+      const { data } = await supabase
+        .from("User")
+        .select("id")
+        .eq("email", user.email)
+        .single();
+
+      if (!data) {
+        await supabase.from("User").insert({
+          id: user.id ?? crypto.randomUUID(),
+          name: user.name,
+          email: user.email,
+          image: user.image,
+        });
+      }
+      return true;
+    },
+  },
   pages: { signIn: "/login" },
 });
