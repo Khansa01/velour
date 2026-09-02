@@ -20,6 +20,21 @@ const ProductsPage = async ({ searchParams }: { searchParams: Promise<{ q?: stri
         {q ? `Results for "${q}"` : "Our Collection"}
       </h1>
 
+      <form method="GET" action="/products" className="mb-8 flex gap-2">
+        <input
+          name="q"
+          defaultValue={q}
+          placeholder="Search products..."
+          className="flex-1 bg-[#222] border border-[rgba(201,168,124,0.2)] text-white text-sm px-4 py-3 rounded-lg placeholder:text-[#a89a80] focus:outline-none focus:border-[#c9a87c]"
+        />
+        <button
+          type="submit"
+          className="px-6 py-3 bg-[#c9a87c] text-[#1a1a1a] text-xs tracking-[2px] uppercase font-medium hover:bg-[#b8976b] transition-colors"
+        >
+          Search
+        </button>
+      </form>
+
       <div className="flex gap-8">
         <aside className="hidden md:block w-48 shrink-0">
           <p className="text-[11px] tracking-[2px] uppercase text-[#c9a87c] mb-4">Category</p>

@@ -15,10 +15,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { label: "Password", type: "password" },
       },
       authorize: async ({ email, password }) => {
-        if (email === "demo@velour.com" && password === "velour123") {
-          return { id: "1", name: "Demo User", email: "demo@velour.com" };
-        }
-        return null;
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: email as string,
+          password: password as string,
+        });
+        if (error || !data.user) return null;
+        return {
+          id: data.user.id,
+          name: data.user.user_metadata?.name,
+          email: data.user.email,
+        };
       },
     }),
   ],
