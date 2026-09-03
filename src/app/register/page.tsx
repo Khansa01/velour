@@ -24,34 +24,29 @@ const RegisterPage = () => {
       return;
     }
 
-    const { data, error } = await supabase.auth.signUp({  
-      email: form.get("email") as string,
-      password,
-      options: {
-        data: { name: form.get("name") as string },
-      },
-    });
-
     try {
-      const { data, error } = await supabase.auth.signUp({
+      const { error } = await supabase.auth.signUp({
         email: form.get("email") as string,
         password,
         options: {
           data: { name: form.get("name") as string },
         },
       });
-      console.log("data:", data);
-      console.log("error:", error);
+
+      if (error) {
+        if (error.status === 422) {
+          setError("Email already registered");
+        } else {
+          setError(error.message);
+        }
+      } else {
+        router.push("/login");
+      }
     } catch (err) {
-      console.log("catch error:", err);
+      setError("Something went wrong");
     }
 
     setLoading(false);
-    if (error) {
-      setError(error.message);
-    } else {
-      router.push("/login");
-    }
   };
 
   return (
