@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
 import { supabase } from "@/lib/supabase";
+import { supabaseAdmin } from "./supabase-admin";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -30,15 +31,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ],
   callbacks: {
     async signIn({ user }) {
+
       if (!user.email) return true;
-      const { data } = await supabase
+      
+      const { data, error } = await supabase
         .from("User")
         .select("id")
         .eq("email", user.email)
         .single();
 
       if (!data) {
-        await supabase.from("User").insert({
+        const { error: insertError } = await supabase.from("User").insert({
           id: user.id ?? crypto.randomUUID(),
           name: user.name,
           email: user.email,
@@ -46,6 +49,23 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         });
       }
       return true;
+    },
+
+    async jwt({ token, user, account }) {
+      if (account && user) {
+        const { data, error } = await supabase
+          .from("User")
+          .select("role")
+          .eq("email", user.email!)
+          .single();
+        token.role = data?.role ?? "user";
+      }
+      return token;
+    },
+
+    async session({ session, token }) {
+      (session.user as any).role = token.role;
+      return session;
     },
   },
   pages: { signIn: "/login" },

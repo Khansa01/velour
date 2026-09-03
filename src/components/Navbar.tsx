@@ -5,6 +5,7 @@ import { Search, Heart, ShoppingBag, User, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useSession, signOut } from "next-auth/react";
 
 const links = ["New Arrivals", "Skincare", "Makeup", "Fragrance", "Brands"];
 
@@ -15,6 +16,9 @@ export default function Navbar() {
   const items = useCartStore((s) => s.items);
   const totalItems = items.reduce((sum, i) => sum + i.quantity, 0);
   const router = useRouter();
+  const { data: session } = useSession();
+  const [showMenu, setShowMenu] = useState(false);
+  const isAdmin = (session?.user as any)?.role === "admin";
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,6 +55,14 @@ export default function Navbar() {
         <Link href="/">
           <span className="text-xl font-medium tracking-[4px] text-white">VELOUR</span>
         </Link>
+        {isAdmin && (
+          <Link
+            href="/admin"
+            className="text-[11px] tracking-[2px] uppercase text-[#c9a87c] border border-[rgba(201,168,124,0.2)] px-3 py-1.5 hover:border-[#c9a87c] transition-colors"
+          >
+            Admin Panel
+          </Link>
+        )}
 
         <ul className="hidden md:flex gap-6 list-none">
           {links.map((l) => (
@@ -79,7 +91,54 @@ export default function Navbar() {
               </span>
             )}
           </Link>
-          <User size={20} className="hidden md:block cursor-pointer hover:text-[#c9a87c] transition-colors" />
+          <div className="relative">
+            {session ? (
+              <div
+                onClick={() => setShowMenu(!showMenu)}
+                className="hidden md:flex items-center justify-center w-7 h-7 rounded-full bg-[#c9a87c] text-[#1a1a1a] text-[11px] font-bold cursor-pointer hover:bg-[#b8976b] transition-colors"
+              >
+                {session.user?.name?.[0]?.toUpperCase() ?? session.user?.email?.[0]?.toUpperCase()}
+              </div>
+            ) : (
+              <User
+                size={20}
+                className="hidden md:block cursor-pointer hover:text-[#c9a87c] transition-colors"
+                onClick={() => setShowMenu(!showMenu)}
+              />
+            )}
+            {showMenu && (
+              <div className="absolute right-0 top-8 bg-[#1a1a1a] border border-[rgba(201,168,124,0.2)] rounded-xl w-52 py-3 z-50 shadow-xl">
+                {session ? (
+                  <>
+                    <div className="px-4 pb-3 border-b border-[rgba(201,168,124,0.1)]">
+                      <p className="text-[11px] tracking-[2px] uppercase text-[#c9a87c] mb-1">Signed in as</p>
+                      <p className="text-[13px] text-white truncate">{session.user?.email}</p>
+                    </div>
+                    {isAdmin && (
+                      <Link href="/admin" onClick={() => setShowMenu(false)} className="block px-4 py-2.5 text-[13px] text-[#a89a80] hover:text-[#c9a87c] hover:bg-[#222] transition-colors mt-1">
+                        Admin Panel
+                      </Link>
+                    )}
+                    <button
+                      onClick={() => { signOut(); setShowMenu(false); }}
+                      className="w-full text-left px-4 py-2.5 text-[13px] text-[#a89a80] hover:text-white hover:bg-[#222] transition-colors"
+                    >
+                      Sign Out
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link href="/login" onClick={() => setShowMenu(false)} className="block px-4 py-2.5 text-[13px] text-[#a89a80] hover:text-[#c9a87c] hover:bg-[#222] transition-colors">
+                      Sign In
+                    </Link>
+                    <Link href="/register" onClick={() => setShowMenu(false)} className="block px-4 py-2.5 text-[13px] text-[#a89a80] hover:text-[#c9a87c] hover:bg-[#222] transition-colors">
+                      Create Account
+                    </Link>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
           <Menu size={20} className="md:hidden cursor-pointer hover:text-[#c9a87c]" onClick={() => setOpen(!open)} />
         </div>
       </div>
