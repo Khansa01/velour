@@ -14,10 +14,35 @@ const CheckoutPage = () => {
     if (!session) router.push("/login");
   }, [session, router]);
 
-  const handleOrder = () => {
-    // nanti diganti payment gateway
-    clear();
-    router.push("/checkout/success");
+  const handleOrder = async () => {
+    const res = await fetch("/api/payment", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        items: items.map((i) => ({
+          id: i.id,
+          name: i.name,
+          price: i.price,
+          quantity: i.quantity,
+        })),
+        total: total(),
+      }),
+    });
+
+    const { token } = await res.json();
+
+    (window as any).snap.pay(token, {
+      onSuccess: () => {
+        clear();
+        router.push("/checkout/success");
+      },
+      onPending: () => {
+        router.push("/checkout/success");
+      },
+      onError: () => {
+        alert("Payment failed!");
+      },
+    });
   };
 
   if (items.length === 0) {
