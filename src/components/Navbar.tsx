@@ -30,7 +30,6 @@ export default function Navbar() {
 
   return (
     <nav className="border-b border-[rgba(201,168,124,0.2)] bg-[#1a1a1a]">
-      {/* Search bar overlay */}
       {searchOpen && (
         <div className="absolute inset-x-0 top-0 z-50 bg-[#1a1a1a] border-b border-[rgba(201,168,124,0.2)] px-6 md:px-8 py-3.5 flex items-center gap-4">
           <Search size={18} className="text-[#c9a87c] shrink-0" />
@@ -55,14 +54,6 @@ export default function Navbar() {
         <Link href="/">
           <span className="text-xl font-medium tracking-[4px] text-white">VELOUR</span>
         </Link>
-        {isAdmin && (
-          <Link
-            href="/admin"
-            className="text-[11px] tracking-[2px] uppercase text-[#c9a87c] border border-[rgba(201,168,124,0.2)] px-3 py-1.5 hover:border-[#c9a87c] transition-colors"
-          >
-            Admin Panel
-          </Link>
-        )}
 
         <ul className="hidden md:flex gap-6 list-none">
           {links.map((l) => (
@@ -75,11 +66,7 @@ export default function Navbar() {
         </ul>
 
         <div className="flex gap-4 items-center text-white/70">
-          <Search
-            size={20}
-            className="cursor-pointer hover:text-[#c9a87c] transition-colors"
-            onClick={() => setSearchOpen(true)}
-          />
+          <Search size={20} className="cursor-pointer hover:text-[#c9a87c] transition-colors" onClick={() => setSearchOpen(true)} />
           <Link href="/wishlist">
             <Heart size={20} className="hidden md:block cursor-pointer hover:text-[#c9a87c] transition-colors" />
           </Link>
@@ -91,6 +78,7 @@ export default function Navbar() {
               </span>
             )}
           </Link>
+
           <div className="relative">
             {session ? (
               <div
@@ -106,6 +94,7 @@ export default function Navbar() {
                 onClick={() => setShowMenu(!showMenu)}
               />
             )}
+
             {showMenu && (
               <div className="absolute right-0 top-8 bg-[#1a1a1a] border border-[rgba(201,168,124,0.2)] rounded-xl w-52 py-3 z-50 shadow-xl">
                 {session ? (
@@ -119,6 +108,9 @@ export default function Navbar() {
                         Admin Panel
                       </Link>
                     )}
+                    <Link href="/orders" onClick={() => setShowMenu(false)} className="block px-4 py-2.5 text-[13px] text-[#a89a80] hover:text-[#c9a87c] hover:bg-[#222] transition-colors">
+                      Order History
+                    </Link>
                     <button
                       onClick={() => { signOut(); setShowMenu(false); }}
                       className="w-full text-left px-4 py-2.5 text-[13px] text-[#a89a80] hover:text-white hover:bg-[#222] transition-colors"

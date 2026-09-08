@@ -23,6 +23,7 @@ export const POST = async (req: Request) => {
       email: session.user?.email,
       name: session.user?.name,
     },
+    custom_field1: session.user?.email,
   };
 
   const token = await snap.createTransaction(parameter);
