@@ -10,14 +10,17 @@ export const POST = async (req: Request) => {
   const { items, total } = await req.json();
   const orderId = `VELOUR-${Date.now()}`;
 
+  console.log("session user:", session.user);
+  console.log("inserting order:", { orderId, userId: session.user?.email, total });
+
   // simpan order ke DB dulu
-  await supabase.from("Order").insert({
+  const { data, error: orderError } = await supabase.from("Order").insert({
     id: orderId,
     userId: session.user?.email,
     total,
     status: "pending",
-  });
-
+  }).select();
+  
   const parameter = {
     transaction_details: {
       order_id: orderId,
