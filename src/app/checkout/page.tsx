@@ -32,15 +32,19 @@ const CheckoutPage = () => {
     const { token } = await res.json();
 
     (window as any).snap.pay(token, {
-      onSuccess: () => {
+      onSuccess: (result: any) => {
         clear();
-        router.push("/checkout/success");
+        router.push(`/checkout/success?order_id=${result.order_id}`);
       },
-      onPending: () => {
-        router.push("/checkout/success");
+      onPending: (result: any) => {
+        clear();
+        router.push(`/orders`);
       },
       onError: () => {
         alert("Payment failed!");
+      },
+      onClose: () => {
+        // user tutup popup tanpa bayar
       },
     });
   };
