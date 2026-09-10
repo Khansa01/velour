@@ -21,6 +21,11 @@ const OrdersPage = () => {
       setOrders(data ?? []);
     };
     fetch();
+
+    window.addEventListener("focus", handleFocus);
+    return () => window.removeEventListener("focus", handleFocus);
+
+    function handleFocus() { fetch(); }
   }, [session]);
 
   const checkStatus = async (orderId: string) => {
@@ -35,7 +40,7 @@ const OrdersPage = () => {
 
       setOrders(prev => prev.map(o => o.id === orderId ? { ...o, status: "paid" } : o));
     }
-    
+
     if (data.va_numbers?.[0]) {
       setPaymentInfo({
         vaNumber: data.va_numbers[0].va_number,
