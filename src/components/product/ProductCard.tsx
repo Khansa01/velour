@@ -19,7 +19,7 @@ export default function ProductCard({ product }: { product: Product }) {
     <Link href={`/products/${product.slug}`} className="group block rounded-xl overflow-hidden border border-[rgba(201,168,124,0.15)] bg-[#222] hover:border-[#c9a87c] transition-colors">
       {/* Image placeholder */}
       <div
-        className="h-48 flex items-center justify-center relative"
+        className="aspect-square flex items-center justify-center relative"
         style={{ background: product.bgColor ?? "linear-gradient(135deg, #f5ede4, #e8d5c4)" }}
       >
         {product.imageUrl ? (
