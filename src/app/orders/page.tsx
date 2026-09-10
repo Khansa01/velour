@@ -28,9 +28,14 @@ const OrdersPage = () => {
     const data = await res.json();
 
     if (data.transaction_status === "settlement") {
+      await supabase
+        .from("Order")
+        .update({ status: "paid" })
+        .eq("id", orderId);
+
       setOrders(prev => prev.map(o => o.id === orderId ? { ...o, status: "paid" } : o));
     }
-
+    
     if (data.va_numbers?.[0]) {
       setPaymentInfo({
         vaNumber: data.va_numbers[0].va_number,
