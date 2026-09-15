@@ -18,7 +18,7 @@ export const POST = async (req: Request) => {
   const { order_id, transaction_status, gross_amount, email } = body;
 
   if (transaction_status === "settlement" || transaction_status === "capture") {
-    await supabase.from("Order").insert({
+    await supabase.from("Order").upsert({
       id: order_id,
       userId: body.custom_field1,
       total: Number(gross_amount),
