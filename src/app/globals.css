@@ -31,3 +31,8 @@ input[type="number"]::-webkit-outer-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
+#nprogress .bar {
+  background: #c9a87c !important;
+  height: 2px !important;
+}
