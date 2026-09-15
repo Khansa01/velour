@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/layout/Footer";
 import Providers from "@/components/providers";
 import Script from "next/script";
+import NProgressProvider from "@/components/NProgress";
 
 const geist = Geist({ subsets: ["latin"] });
 
@@ -18,6 +19,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en">
       <body className="min-h-full flex flex-col">
+        <NProgressProvider />
         <Script
           src="https://app.sandbox.midtrans.com/snap/snap.js"
           data-client-key={process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY}
