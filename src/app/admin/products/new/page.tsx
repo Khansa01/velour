@@ -10,6 +10,16 @@ const NewProductPage = () => {
   const [loading, setLoading] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [name, setName] = useState("");
+  const [slug, setSlug] = useState("");
+
+  const generateSlug = (value: string) => {
+    return value
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .trim()
+      .replace(/\s+/g, "-");
+  };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -58,8 +68,25 @@ const NewProductPage = () => {
 
       <form onSubmit={handleSubmit} className="max-w-xl flex flex-col gap-4">
         <input name="brand" placeholder="Brand" required className={inputClass} />
-        <input name="name" placeholder="Product Name" required className={inputClass} />
-        <input name="slug" placeholder="Slug (e.g. creme-de-la-mer)" required className={inputClass} />
+        <input
+          name="name"
+          placeholder="Product Name"
+          required
+          className={inputClass}
+          value={name}
+          onChange={(e) => {
+            setName(e.target.value);
+            setSlug(generateSlug(e.target.value));
+          }}
+        />
+        <input
+          name="slug"
+          placeholder="Slug (e.g. creme-de-la-mer)"
+          required
+          className={inputClass}
+          value={slug}
+          onChange={(e) => setSlug(e.target.value)}
+        />
         <input name="price" type="number" placeholder="Price" required className={inputClass} />
         <input name="category" placeholder="Category" className={inputClass} />
         <input name="badge" placeholder="Badge (NEW, SALE, etc)" className={inputClass} />
