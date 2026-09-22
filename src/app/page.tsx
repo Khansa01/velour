@@ -44,9 +44,9 @@ const Home = async () => {
         <p className="text-[13px] tracking-[3px] uppercase text-[#a89a80] mb-6">Shop by category</p>
         <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
           {["Skincare", "Makeup", "Fragrance", "Hair", "Best Sellers"].map((cat) => (
-            <div key={cat} className="border border-[rgba(201,168,124,0.2)] rounded-xl p-5 text-center cursor-pointer hover:border-[#c9a87c] transition-colors">
+            <Link href={`/products?category=${cat}`} key={cat} className="border border-[rgba(201,168,124,0.2)] rounded-xl p-5 text-center hover:border-[#c9a87c] transition-colors">
               <p className="text-[12px] text-[#a89a80] tracking-wide">{cat}</p>
-            </div>
+            </Link>
           ))}
         </div>
       </section>
