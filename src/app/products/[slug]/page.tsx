@@ -35,11 +35,10 @@ const ProductDetailPage = ({ params }: { params: Promise<{ slug: string }> }) =>
       <div className="flex flex-col md:flex-row gap-12">
         {/* Image */}
         <div
-          className="w-full md:w-1/2 h-80 md:h-[500px] rounded-xl overflow-hidden"
-          style={{ background: product.bgColor ?? "linear-gradient(135deg, #f5ede4, #e8d5c4)" }}
+          className="w-full md:w-1/2 h-80 md:h-[500px] rounded-xl overflow-hidden bg-white"
         >
           {product.imageUrl && (
-            <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover" />
+            <img src={product.imageUrl} alt={product.name} className="w-full h-full object-contain" />
           )}
         </div>
 
@@ -60,6 +59,16 @@ const ProductDetailPage = ({ params }: { params: Promise<{ slug: string }> }) =>
           </p>
 
           <div className="flex gap-3">
+            <button
+              onClick={() => {
+                if (!session) { router.push("/login"); return; }
+                addToCart(product);
+                router.push("/checkout");
+              }}
+              className="flex-1 py-3 bg-[#1a1a1a] border border-[#c9a87c] text-[#c9a87c] text-xs tracking-[2px] uppercase font-medium hover:bg-[#c9a87c] hover:text-[#1a1a1a] transition-colors"
+            >
+              Buy Now
+            </button>
             <button
               onClick={() => {
                 if (!session) { router.push("/login"); return; }
